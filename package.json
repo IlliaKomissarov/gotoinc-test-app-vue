@@ -13,7 +13,7 @@
   "dependencies": {
     "pinia": "^2.1.7",
     "uuid": "^9.0.1",
-    "vue": "^3.3.4",
+    "vue": "^3.3.8",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

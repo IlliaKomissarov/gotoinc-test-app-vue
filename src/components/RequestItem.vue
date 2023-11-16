@@ -24,11 +24,12 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
-import EditDialog from "./EditDialog.vue";
+import { defineProps, ref, defineEmits } from "vue";
 import FormeList from "./FormeList.vue";
 
 const { request } = defineProps(["request"]);
+const { emit } = defineEmits();
+
 const isEditing = ref(false);
 
 const editRequest = () => {

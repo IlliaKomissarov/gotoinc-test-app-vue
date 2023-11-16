@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="request-list">
     <RequestItem
       v-for="(request, index) in store.state.requests"
       :key="index"
@@ -28,3 +28,16 @@ const deleteRequest = (index) => {
   store.commit('deleteRequest', store.state.requests[index].id);
 };
 </script>
+
+<style scoped>
+.request-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Optional: Add a bit of spacing between each request item */
+.request-list > li {
+  margin-bottom: 1rem;
+}
+</style>
