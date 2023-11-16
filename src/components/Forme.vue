@@ -1,9 +1,8 @@
 <template>
   <div>
-    <form @submit.prevent="$emit('submit')" class="max-w-md mx-auto p-4 space-y-4">
+    <form @submit.prevent="$emit('submit', formData)" class="max-w-md mx-auto p-4 space-y-4">
       <div v-for="inputValue in inputValues" :key="inputValue.label">
         <label :for="inputValue.id" class="block text-sm font-medium text-gray-700">{{ inputValue.label }}</label>
-        <!-- Виведення введених даних у відповідних інпутах -->
         <input v-model="formData[inputValue.id]" :type="inputValue.type" :placeholder="inputValue.placeholder" class="mt-1 p-2 w-full border rounded-md" />
       </div>
       <textarea v-model="formData.parcelDescription" class="p-2 w-full border rounded-md" rows="5"></textarea>
@@ -20,7 +19,7 @@
 <script setup>
 import { defineProps, ref, onMounted } from 'vue';
 
-defineProps(['originCity', 'destinationCity', 'dispatchDate', 'parcelDescription', 'parcelType']);
+const { originCity, destinationCity, dispatchDate, parcelDescription, parcelType } = defineProps(['originCity', 'destinationCity', 'dispatchDate', 'parcelDescription', 'parcelType']);
 const formData = ref({
   'sender-city': '',
   'recipient-city': '',
@@ -55,7 +54,6 @@ let inputValues = [
   },
 ];
 
-// Забезпечте логіку для заповнення форми даними при редагуванні
 const fillForm = () => {
   formData['sender-city'] = originCity;
   formData['recipient-city'] = destinationCity;
@@ -64,7 +62,6 @@ const fillForm = () => {
   formData['parcelType'] = parcelType;
 };
 
-// Визовіть fillForm() при монтуванні компонента, якщо редагуємо
 onMounted(() => {
   if (originCity) fillForm();
 });

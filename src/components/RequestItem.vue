@@ -1,4 +1,3 @@
-<!-- RequestItem.vue -->
 <template>
   <div class="request-item border p-4 my-4">
     <h2>Request Details</h2>
@@ -10,13 +9,12 @@
     <button class="action-btn" @click="editRequest">Edit</button>
     <button class="action-btn" @click="deleteRequest">Delete</button>
 
-    <!-- Модальне вікно для редагування -->
     <Forme v-if="isEditing" :originCity="request['sender-city']" :destinationCity="request['recipient-city']" :dispatchDate="request['delivery-date']" :parcelDescription="request['parcelDescription']" :parcelType="request['parcelType']" @submit="saveEdit" />
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue';
+import { defineProps, defineEmits, ref, onMounted } from 'vue';
 import Forme from './Forme.vue';
 
 const { request } = defineProps(['request']);
@@ -36,6 +34,11 @@ const saveEdit = (editedFormData) => {
   emit('edit', { id: request.id, data: editedFormData });
   isEditing.value = false;
 };
+
+onMounted(() => {
+  // Додатковий код, щоб забезпечити isEditing дорівнює false після монтажу компонента
+  isEditing.value = false;
+});
 </script>
 
 <style scoped>

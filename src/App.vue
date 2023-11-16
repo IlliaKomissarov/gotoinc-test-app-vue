@@ -7,7 +7,7 @@
       v-model:parcelType="formData.parcelType"
       v-model:dispatchDate="formData.dispatchDate"
       v-model:parcelDescription="formData.parcelDescription"
-      @submit="createRequest"
+      @submit="handleFormSubmit"
     />
 
     <div v-if="requests.length">
@@ -40,8 +40,12 @@ const formData = ref({
 
 const requests = ref([]);
 
-const createRequest = () => {
-  const newRequest = { ...formData.value, id: Math.random().toString() };
+const handleFormSubmit = (formValues) => {
+  createRequest(formValues);
+};
+
+const createRequest = (formData) => {
+  const newRequest = { ...formData, id: Math.random().toString() };
   requests.value.push(newRequest);
   clearForm();
 };
@@ -53,7 +57,10 @@ const deleteRequest = (requestId) => {
 const editRequest = (editedData) => {
   const index = requests.value.findIndex(request => request.id === editedData.id);
   if (index !== -1) {
-    requests.value[index] = editedData;
+    // Оновлюємо кожне поле окремо, щоб зберегти реактивність
+    Object.keys(editedData).forEach(key => {
+      requests.value[index][key] = editedData[key];
+    });
     clearForm();
   }
 };
