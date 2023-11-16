@@ -11,6 +11,7 @@
           {{ optionValue }}
         </option>
       </select>
+       <button type="button" @click="$emit('cancel')">Cancel</button>
       <button type="submit" class="p-2 bg-blue-500 text-white rounded-md w-full">Submit</button>
     </form>
   </div>

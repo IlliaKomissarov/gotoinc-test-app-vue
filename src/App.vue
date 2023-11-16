@@ -1,7 +1,8 @@
+<!-- App.vue -->
 <template>
   <div>
     <h1>Parcel Transport App</h1>
-    <Forme
+    <FormeList
       v-model:originCity="formData.fromCity"
       v-model:destinationCity="formData.toCity"
       v-model:parcelType="formData.parcelType"
@@ -10,11 +11,11 @@
       @submit="handleFormSubmit"
     />
 
-    <div v-if="requests.length">
+    <div v-if="store.state.requests.length">
       <h2>Requests:</h2>
       <ul>
         <RequestItem
-          v-for="request in requests"
+          v-for="request in store.state.requests"
           :key="request.id"
           :request="request"
           @delete="deleteRequest"
@@ -26,10 +27,12 @@
 </template>
 
 <script setup>
-import Forme from './components/Forme.vue';
-import RequestItem from './components/RequestItem.vue';
 import { ref } from 'vue';
+import FormeList from './components/FormeList.vue';
+import RequestItem from './components/RequestItem.vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const formData = ref({
   fromCity: '',
   toCity: '',
@@ -38,34 +41,25 @@ const formData = ref({
   parcelDescription: '',
 });
 
-const requests = ref([]);
-
 const handleFormSubmit = (formValues) => {
-  createRequest(formValues);
-};
-
-const createRequest = (formData) => {
-  const newRequest = { ...formData, id: Math.random().toString() };
-  requests.value.push(newRequest);
+  store.commit('addRequest', formValues);
   clearForm();
 };
 
 const deleteRequest = (requestId) => {
-  requests.value = requests.value.filter(request => request.id !== requestId);
+  store.commit('deleteRequest', requestId);
 };
 
 const editRequest = (editedData) => {
-  const index = requests.value.findIndex(request => request.id === editedData.id);
-  if (index !== -1) {
-    // Оновлюємо кожне поле окремо, щоб зберегти реактивність
-    Object.keys(editedData).forEach(key => {
-      requests.value[index][key] = editedData[key];
-    });
-    clearForm();
-  }
+  store.commit('editRequest', { id: editedData.id, data: editedData.data });
+  clearForm();
 };
 
 const clearForm = () => {
-  Object.keys(formData.value).forEach(key => (formData.value[key] = ''));
+  Object.keys(formData).forEach(key => (formData[key] = ''));
 };
 </script>
+
+<style scoped>
+/* Add your styles here */
+</style>
